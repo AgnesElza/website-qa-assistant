@@ -8,6 +8,9 @@ from transformers import pipeline
 from langchain.llms import HuggingFacePipeline
 from langchain.chains import RetrievalQA
 
+from langchain.prompts import PromptTemplate
+from langchain.chains.question_answering import load_qa_chain
+
 # Step 1: Ask for the article URL
 url = input("Paste the article URL: ").strip()
 
@@ -46,9 +49,28 @@ generator = pipeline("text2text-generation", model="google/flan-t5-large", max_n
 llm = HuggingFacePipeline(pipeline=generator)
 
 # Step 7: Create QA chain with retriever and LLM
-qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever)
+#qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever)
 
-# Step 8: Ask questions
+# Step 7: Create a custom prompt to improve answer quality
+custom_prompt = PromptTemplate(
+    template=(
+        "You are an assistant for answering questions about a specific article.\n"
+        "Use the following context to answer the question. If the answer isn't in the context, say you don't know.\n\n"
+        "Context:\n{context}\n\n"
+        "Question: {question}\nAnswer:"
+    ),
+    input_variables=["context", "question"]
+)
+
+# Step 8: Create QA chain using the custom prompt
+qa_chain = RetrievalQA.from_chain_type(
+    llm=llm,
+    retriever=retriever,
+    chain_type="stuff",
+    chain_type_kwargs={"prompt": custom_prompt}
+)
+
+# Step 9: Ask questions
 while True:
     query = input("\nAsk a question about the article (or type 'exit'): ").strip()
     if query.lower() == "exit":
