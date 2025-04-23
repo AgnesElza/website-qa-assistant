@@ -34,7 +34,9 @@ print("✅ Embeddings stored and retriever ready!")
 
 # Step 6: Set up the text generation model
 print("🤖 Loading Hugging Face model...")
-generator = pipeline("text-generation", model="gpt2", max_new_tokens=100)
+#generator = pipeline("text-generation", model="gpt2", max_new_tokens=100)
+#generator = pipeline("text2text-generation", model="google/flan-t5-base", max_new_tokens=200)
+generator = pipeline("text2text-generation", model="google/flan-t5-large", max_new_tokens=200)
 llm = HuggingFacePipeline(pipeline=generator)
 
 # Step 7: Create QA chain with retriever and LLM
