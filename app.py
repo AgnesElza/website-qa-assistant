@@ -9,13 +9,19 @@ from langchain.llms import HuggingFacePipeline
 from langchain.chains import RetrievalQA
 
 # Step 1: Ask for the article URL
-url = input("Paste the Medium article URL: ").strip()
+url = input("Paste the article URL: ").strip()
 
 # Step 2: Load the article content
 print("📥 Loading article...")
 loader = UnstructuredURLLoader(urls=[url])
 documents = loader.load()
 print(f"✅ Loaded {len(documents)} document(s)")
+
+# Step 2.5: Clean the raw text to remove repetitive junk
+for doc in documents:
+    doc.page_content = doc.page_content.replace(
+        "Help\nStatus\nAbout\nCareers\nPress\nBlog\nPrivacy\nRules\nTerms\nText to speech", ""
+    )
 
 # Step 3: Split the text into chunks
 print("✂️ Splitting document into chunks...")
