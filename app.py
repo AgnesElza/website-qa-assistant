@@ -45,7 +45,15 @@ print("✅ Embeddings stored and retriever ready!")
 print("🤖 Loading Hugging Face model...")
 #generator = pipeline("text-generation", model="gpt2", max_new_tokens=100)
 #generator = pipeline("text2text-generation", model="google/flan-t5-base", max_new_tokens=200)
-generator = pipeline("text2text-generation", model="google/flan-t5-large", max_new_tokens=200)
+#generator = pipeline("text2text-generation", model="google/flan-t5-large", max_new_tokens=200)
+generator = pipeline(
+    "text2text-generation", 
+    model="declare-lab/flan-alpaca-large", 
+    max_new_tokens=200,
+    repetition_penalty=1.2, #Avoids repeated phrases
+    do_sample=False #Makes output more accurate and consistent
+                     )
+
 llm = HuggingFacePipeline(pipeline=generator)
 
 # Step 7: Create QA chain with retriever and LLM
@@ -75,5 +83,5 @@ while True:
     query = input("\nAsk a question about the article (or type 'exit'): ").strip()
     if query.lower() == "exit":
         break
-    answer = qa_chain.run(query)
+    answer = qa_chain.invoke(query)
     print(f"\n📖 Answer: {answer}")
