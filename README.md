@@ -1,63 +1,96 @@
 # 🧾 Website QA Assistant
 
-Ask questions about any article using LangChain and Hugging Face models.
+Ask questions about any article — like a Medium post — using LangChain, Hugging Face models, and vector search.
 
-This tool lets you input a Medium article URL (or any public webpage), chunk its content, embed it for semantic understanding, and ask questions about it using a free local language model.
+This project uses a Retrieval-Augmented Generation (RAG) pipeline to:
+- Load content from a public web URL
+- Chunk and embed the content
+- Store and retrieve context with Chroma
+- Generate accurate answers using Hugging Face models (e.g., `flan-alpaca-large`)
 
-## Features
+---
 
-- 🌐 Loads web articles directly from a URL
-- ✂️ Chunks and stores content in Chroma vector database
-- 🧠 Embeds using `all-MiniLM-L6-v2` from Hugging Face
-- 🤖 Answers questions using `flan-t5-base` via transformers pipeline
-- 🔒 100% local — no OpenAI keys needed
-- 💬 Command-line interface (CLI); easy to extend to Streamlit or Gradio
+## 🚀 Features
 
-## Tech Stack
+- 🔗 Load articles using `UnstructuredURLLoader`
+- ✂️ Split content with `RecursiveCharacterTextSplitter` for better context retention
+- 🧠 Embed using `all-MiniLM-L6-v2` via `HuggingFaceEmbeddings`
+- 🗃 Store chunks in a local ChromaDB instance
+- 🤖 Answer questions using `flan-alpaca-large` (via `transformers` and `HuggingFacePipeline`)
+- 📝 Custom prompt template for high-quality outputs
+- 📦 100% local — no OpenAI or hosted API required
 
-- [`langchain`](https://github.com/langchain-ai/langchain)
-- [`transformers`](https://huggingface.co/docs/transformers/)
-- [`sentence-transformers`](https://www.sbert.net/)
-- [`chromadb`](https://www.trychroma.com/)
-- `unstructured`, `beautifulsoup4`, `tqdm`
+---
 
-## Setup
+## 📦 Tech Stack
+
+- [LangChain](https://www.langchain.com/)
+- [Transformers (Hugging Face)](https://huggingface.co/docs/transformers)
+- [Chroma Vector DB](https://www.trychroma.com/)
+- `sentence-transformers`, `tqdm`, `unstructured`, `bs4`
+
+---
+
+## 🛠 Setup Instructions
 
 ### 1. Clone the repo
-
-git clone git@github.com:AgnesElza/website-qa-assistant.git
+```bash
+git clone https://github.com/your-username/website-qa-assistant.git
 cd website-qa-assistant
-### 2. Create environment & install dependencies
+```
+### 2. Create and activate environment
 
-conda activate your-env-name
+conda create -n data-science-env python=3.10
+conda activate data-science-env
+
+### 3. Install dependencies
+```bash
 pip install -r requirements.txt
-### 3. Run the assistant
 
+```
+# 🧪 Usage
+## Run the assistant
+```bash
 python app.py
-Then paste in a Medium article URL and ask questions about the content!
 
-## 🔮 Example Questions
-"What is the main point of the article?"
+```
+## Example flow
+Paste the article URL: https://medium.com/some-article-link
+📥 Loading article...
+✅ Loaded 1 document(s)
+✂️ Splitting document into chunks...
+📐 Embedding chunks...
+✅ Embeddings stored and retriever ready!
+🤖 Loading Hugging Face model...
 
-"Who is the author?"
+Ask a question about the article (or type 'exit'): What is the summary?
+📖 Answer: This article explains how data science is evolving, not disappearing...
 
-"List any advice given."
+# 📂 Project Structure
+.
+├── app.py                # Main application script
+├── requirements.txt      # Python dependencies
+├── .env.example          # Template for environment variable setup
+├── README.md             # This file
+├── .gitignore            # Ignores .env, chroma_db, etc.
+└── chroma_db/            # Auto-generated vector store (excluded from Git)
 
-"Summarize the conclusion."
+# 🔐 Environment Variables
+Create a .env file in your project root (not committed) with:
+HUGGINGFACEHUB_API_TOKEN=your_token_here  # Only needed for hosted models (not used in current setup)
+Or just use .env.example as a reference.
 
-## To-Do / Coming Soon
- Streamlit UI
+# 🧠 Key Concepts
+LangChain lets you chain together components like prompts, retrievers, and LLMs
 
- PDF and doc support
+Hugging Face Pipelines give you access to instruction-tuned models like flan-t5 or flan-alpaca
 
- Multi-article memory
+ChromaDB stores embeddings locally and retrieves context at runtime
 
- Summarization mode
+Custom Prompts ensure the assistant answers accurately and doesn’t hallucinate
 
- Export Q&A transcript
+# 📜 License
+This project is open-sourced under the MIT License.
 
-## 👩‍💻 Author
-Agnes Elza — GitHub Profile
-
-## 📄 License
-MIT License
+# 🙋‍♀️ Author
+Created by Agnes A
