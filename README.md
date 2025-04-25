@@ -115,5 +115,5 @@ This project is open-sourced under the [MIT License](LICENSE).
 
 ## 🙋‍♀️ Author
 
-Created by **Agnes Augustine**  
+Created by **Agnes A**  
 [Portfolio](https://portfolio.agnesaugustine.com/) • [LinkedIn](https://www.linkedin.com/in/agnesaugustine/) • [GitHub](https://github.com/AgnesElza)
